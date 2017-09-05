@@ -61,8 +61,8 @@
     </ApplicationDefinition>
     <Compile Include="Player\InputSender.cs" />
     <Compile Include="Player\TaskPlayer.cs" />
+    <Compile Include="Task\InputEvent.cs" />
     <Compile Include="Task\InputChain.cs" />
-    <Compile Include="Task\InputCommand.cs" />
     <Compile Include="Recorder\Logger\InputLogger.cs" />
     <Compile Include="Recorder\Logger\KeyListener.cs" />
     <Compile Include="Recorder\Session\RecordSession.cs" />

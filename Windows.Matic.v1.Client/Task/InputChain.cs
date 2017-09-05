@@ -4,19 +4,19 @@ namespace Windows.Matic.v1.Task
 {
     public class InputChain
     {
-        private List<InputCommand> _chain; 
+        private List<InputEvent> _chain;
 
         public InputChain()
         {
-            _chain = new List<InputCommand>();
+            _chain = new List<InputEvent>();
         }
 
-        public void AddInputCommand(InputCommand ic)
+        public void AddInputEvent(InputEvent ie)
         {
-            _chain.Add(ic);
+            _chain.Add(ie);
         }
 
-        public List<InputCommand> Chain
+        public List<InputEvent> Chain
         {
             get { return _chain;  }
         }

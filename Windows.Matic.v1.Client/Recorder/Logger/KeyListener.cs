@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
+using Windows.Matic.v1.Task;
 
 namespace Windows.Matic.v1.Recorder.Logger
 {
-    public class KeysetReadyEventArgs : EventArgs
+    public class InputEventReadyEventArgs : EventArgs
     {
-        private List<Keys> _keyset;
+        private InputEvent _inputEvent;
 
-        public KeysetReadyEventArgs(List<Keys> keyset)
+        public InputEventReadyEventArgs(InputEvent ie)
         {
-            _keyset = keyset;
+            _inputEvent = ie;
         }
         
-        public List<Keys> Keyset
+        public InputEvent InputEvent
         {
-            get { return _keyset; }
+            get { return _inputEvent; }
         }
     }
 
@@ -38,12 +38,10 @@ namespace Windows.Matic.v1.Recorder.Logger
         #endregion
 
         const bool PLAY_NICE = false;
-        private KeyEventType _lastKeyEventType = KeyEventType.None;
         private bool _loggingSessionInProgress = false;
-        private List<Keys> _keysBuffer = new List<Keys>();
-        private static string LoggerInitializedDateTime = DateTime.Now.ToString("yyyyMMddTHHmmss");
+        private List<InputEvent> _eventBuffer = new List<InputEvent>();
 
-        public event EventHandler<KeysetReadyEventArgs> RaiseKeysetReady;
+        public event EventHandler<InputEventReadyEventArgs> RaiseInputEventReady;
 
         public KeyListener()
         {
@@ -55,9 +53,9 @@ namespace Windows.Matic.v1.Recorder.Logger
             StopLogging();
         }
 
-        public void ResetKeysetReadyIncovationList()
+        public void ResetInputEventReadyIncovationList()
         {
-            RaiseKeysetReady = null;
+            RaiseInputEventReady = null;
         }
 
         public void StartLogging()
@@ -81,7 +79,6 @@ namespace Windows.Matic.v1.Recorder.Logger
         public void hook()
         {
             hInstance = LoadLibrary("User32");
-            //_keyboardHookProc = new keyboardHookProc(hookProc);
             hhook = SetWindowsHookEx(WH_KEYBOARD_LL, _keyboardHookProc, hInstance, 0);
         }
 
@@ -95,29 +92,17 @@ namespace Windows.Matic.v1.Recorder.Logger
             if (code >= 0)
             {
                 Keys key = (Keys)lParam.vkCode;
-                //if (HookedKeys.Contains(key))
-
                 KeyEventArgs kea = new KeyEventArgs(key);
                 if ((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
                 {
-                    AddKeyToBuffer(key);
-                    _lastKeyEventType = KeyEventType.Down;
+                    OnRaiseInputEventReady(new InputEvent(key, KeyEventType.Down, 100));
                 }
                 else if ((wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
                 {
-                    if (_lastKeyEventType == KeyEventType.Down)
-                    {
-                        List<Keys> keyset = new List<Keys>(_keysBuffer);
-                        RemoveKeyFromBuffer(key);
-                        _lastKeyEventType = KeyEventType.Up;
-                        OnRaiseKeysetReady(keyset);
-                    }
-                    else
-                    {
-                        RemoveKeyFromBuffer(key);
-                        _lastKeyEventType = KeyEventType.Up;
-                    }
+                    OnRaiseInputEventReady(new InputEvent(key, KeyEventType.Up, 100));
                 }
+
+                // TODO : Might be worth it to investigate this
                 if (kea.Handled)
                 {
                     return 1;
@@ -135,26 +120,13 @@ namespace Windows.Matic.v1.Recorder.Logger
             }
         }
 
-        private void AddKeyToBuffer(Keys k)
+        private void OnRaiseInputEventReady(InputEvent ie)
         {
-            if (!_keysBuffer.Contains(k))
-            {
-                _keysBuffer.Add(k);
-            }
-        }
-
-        private void RemoveKeyFromBuffer(Keys k)
-        {
-            _keysBuffer.Remove(k);
-        }
-
-        private void OnRaiseKeysetReady(List<Keys> keyset)
-        {
-            EventHandler<KeysetReadyEventArgs> handler = RaiseKeysetReady;
+            EventHandler<InputEventReadyEventArgs> handler = RaiseInputEventReady;
 
             if (handler != null)
             {
-                KeysetReadyEventArgs ea = new KeysetReadyEventArgs(keyset);
+                InputEventReadyEventArgs ea = new InputEventReadyEventArgs(ie);
                 handler(this, ea);
             }
         }
@@ -175,13 +147,6 @@ namespace Windows.Matic.v1.Recorder.Logger
             public int flags;
             public int time;
             public int dwExtraInfo;
-        }
-
-        public enum KeyEventType
-        {
-            None,
-            Down,
-            Up
         }
 
         const int WH_KEYBOARD_LL = 13;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using Windows.Matic.v1.Task;
+﻿using Windows.Matic.v1.Task;
 
 namespace Windows.Matic.v1.Player
 {
@@ -16,13 +13,17 @@ namespace Windows.Matic.v1.Player
 
         public void Execute(UserTask ut)
         {
-            foreach (InputCommand ic in ut.InputChain.Chain)
+            foreach (InputEvent ie in ut.InputChain.Chain)
             {
-                foreach (Keys k in ic.Keyset)
+                if (ie.EventType == KeyEventType.Down)
                 {
-                    _inputSender.SendKeyPress(k);
-                    System.Threading.Thread.Sleep(1000);
+                    _inputSender.SendKeyDown(ie.Key);
                 }
+                else if (ie.EventType == KeyEventType.Up)
+                {
+                    _inputSender.SendKeyUp(ie.Key);
+                }
+                System.Threading.Thread.Sleep(ie.EventDelay);
             }
         }
     }

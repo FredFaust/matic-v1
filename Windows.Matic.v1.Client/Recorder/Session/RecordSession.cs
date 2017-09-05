@@ -15,11 +15,11 @@ namespace Windows.Matic.v1.Recorder.Session
             _recordingState = RecordingState.Inactive;
         }
 
-        public void AddInputCommand(InputCommand ic)
+        public void AddInputEvent(InputEvent ie)
         {
             if (_recordingState == RecordingState.Active)
             {
-                _inputChain.AddInputCommand(ic);
+                _inputChain.AddInputEvent(ie);
             }
         }
 
