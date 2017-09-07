@@ -15,6 +15,7 @@ namespace Windows.Matic.v1.Player
         {
             foreach (InputEvent ie in ut.InputChain.Chain)
             {
+                System.Threading.Thread.Sleep(ie.EventDelay);
                 if (ie.EventType == KeyEventType.Down)
                 {
                     _inputSender.SendKeyDown(ie.Key);
@@ -23,7 +24,6 @@ namespace Windows.Matic.v1.Player
                 {
                     _inputSender.SendKeyUp(ie.Key);
                 }
-                System.Threading.Thread.Sleep(ie.EventDelay);
             }
         }
     }

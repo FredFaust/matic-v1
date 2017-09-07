@@ -38,6 +38,8 @@ namespace Windows.Matic.v1.Recorder.Logger
         #endregion
 
         const bool PLAY_NICE = false;
+        private bool _eventsIceBroken = false;
+        private DateTime _lastEventDateTime;
         private bool _loggingSessionInProgress = false;
         private List<InputEvent> _eventBuffer = new List<InputEvent>();
 
@@ -91,15 +93,27 @@ namespace Windows.Matic.v1.Recorder.Logger
         {
             if (code >= 0)
             {
+                int delaySinceLastEvent = 0;
+                if (_eventsIceBroken)
+                {
+                    delaySinceLastEvent = (int)(DateTime.Now - _lastEventDateTime).TotalMilliseconds;
+                    _lastEventDateTime = DateTime.Now;
+                }
+                else
+                {
+                    _lastEventDateTime = DateTime.Now;
+                }
+
+                _eventsIceBroken = true;
                 Keys key = (Keys)lParam.vkCode;
                 KeyEventArgs kea = new KeyEventArgs(key);
                 if ((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
                 {
-                    OnRaiseInputEventReady(new InputEvent(key, KeyEventType.Down, 100));
+                    OnRaiseInputEventReady(new InputEvent(key, KeyEventType.Down, delaySinceLastEvent));
                 }
                 else if ((wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
                 {
-                    OnRaiseInputEventReady(new InputEvent(key, KeyEventType.Up, 100));
+                    OnRaiseInputEventReady(new InputEvent(key, KeyEventType.Up, delaySinceLastEvent));
                 }
 
                 // TODO : Might be worth it to investigate this
