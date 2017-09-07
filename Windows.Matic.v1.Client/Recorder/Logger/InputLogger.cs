@@ -10,10 +10,14 @@ namespace Windows.Matic.v1.Recorder.Logger
     public class InputLogger
     {
         private List<Keys> _activeKeys;
+        private List<InputEvent> _inputEventsBuffer;
+        private bool _canAcceptInput = true;
+
         private KeyListener _keyListener;
         private RecordSession _currentSession;
         
         public Action RecordingDoneAction;
+        public Action ReservedCommandFoundAction;
 
         private Keys _reservedKeyPause = Keys.P;
         private Keys _reservedKeyResume = Keys.R;
@@ -22,6 +26,8 @@ namespace Windows.Matic.v1.Recorder.Logger
         public InputLogger()
         {
             _activeKeys = new List<Keys>();
+            _inputEventsBuffer = new List<InputEvent>();
+
             _keyListener = KeyListener.Instance;
             _keyListener.ResetInputEventReadyIncovationList();
             _keyListener.RaiseInputEventReady += HandleInputEventReady;
@@ -45,37 +51,89 @@ namespace Windows.Matic.v1.Recorder.Logger
             InputEvent ie = ea.InputEvent;
 
             UpdateActiveKeys(ie);
+        }       
 
-            if (!CurrentActiveKeysAreReservedCommands() && _currentSession.RecordingState == RecordingState.Active)
+        private void UpdateActiveKeys(InputEvent ie)
+        {
+            if (_canAcceptInput)
             {
-                _currentSession.AddInputEvent(ie);
+                _inputEventsBuffer.Add(ie);
             }
-            else
+
+            if (ie.EventType == KeyEventType.Down)
             {
-                HandleReserverdInputCommand();
+                if (!_activeKeys.Contains(ie.Key))
+                {
+                    _activeKeys.Add(ie.Key);
+                    if (ReservedCommandFoundInActiveKeys())
+                    {
+                        _canAcceptInput = false;
+                        ReservedCommandFoundAction?.Invoke();
+                    }
+                }
+            }
+            else if (ie.EventType == KeyEventType.Up)
+            {
+                if (_activeKeys.Contains(ie.Key))
+                {
+                    _activeKeys.Remove(ie.Key);
+                }
+            }
+            
+            if (!_activeKeys.Any())
+            {
+                _canAcceptInput = true;
+                if (_inputEventsBuffer.Any())
+                {
+                    _currentSession.AddInputEvents(_inputEventsBuffer);
+                    _inputEventsBuffer = new List<InputEvent>();
+                }
             }
         }
 
-        private void HandleReserverdInputCommand()
+        private bool ReservedCommandFoundInActiveKeys()
         {
+            bool reservedCommandFound = false;
+
             if (CurrentActiveKeysIsReservedCommand(_reservedKeyPause))
             {
-                _currentSession.PauseRecording();
-            }
+                reservedCommandFound = true;
+                ReservedCommandFoundAction = HandleReservedCommandPause;
+            } 
             else if (CurrentActiveKeysIsReservedCommand(_reservedKeyResume))
             {
-                _currentSession.ResumeRecording();
-            }
+                reservedCommandFound = true;
+                ReservedCommandFoundAction = HandleReservedCommandResume;
+            } 
             else if (CurrentActiveKeysIsReservedCommand(_reservedKeyFinish))
             {
-                StopLogging();
-                RecordingDoneAction?.Invoke();
+                reservedCommandFound = true;
+                ReservedCommandFoundAction = HandleReservedCommandFinish;
             }
+
+            return reservedCommandFound;
         }
 
-        private bool CurrentActiveKeysAreReservedCommands()
+        private void HandleReservedCommandPause()
         {
-            return (CurrentActiveKeysIsReservedCommand(_reservedKeyPause) || CurrentActiveKeysIsReservedCommand(_reservedKeyResume) || CurrentActiveKeysIsReservedCommand(_reservedKeyFinish));
+            ReservedCommandFoundAction = null;
+            _inputEventsBuffer = new List<InputEvent>();
+            _currentSession.PauseRecording();
+        }
+
+        private void HandleReservedCommandResume()
+        {
+            ReservedCommandFoundAction = null;
+            _inputEventsBuffer = new List<InputEvent>();
+            _currentSession.ResumeRecording();
+        }
+
+        private void HandleReservedCommandFinish()
+        {
+            ReservedCommandFoundAction = null;
+            _inputEventsBuffer = new List<InputEvent>();
+            StopLogging();
+            RecordingDoneAction?.Invoke();
         }
 
         private bool CurrentActiveKeysIsReservedCommand(Keys reservedKey)
@@ -84,7 +142,7 @@ namespace Windows.Matic.v1.Recorder.Logger
             {
                 return false;
             }
-            return _activeKeys.Contains(reservedKey);
+            return _activeKeys.Contains(reservedKey) && _activeKeys.Count == 3;
         }
 
         public bool ReservedModifierKeysPressed()
@@ -101,24 +159,6 @@ namespace Windows.Matic.v1.Recorder.Logger
             }
 
             return ctrlKeyPresent && altKeyPresent;
-        }
-
-        private void UpdateActiveKeys(InputEvent ie)
-        {
-            if (ie.EventType == KeyEventType.Down)
-            {
-                if (!_activeKeys.Contains(ie.Key))
-                {
-                    _activeKeys.Add(ie.Key);
-                }
-            }
-            else if (ie.EventType == KeyEventType.Up)
-            {
-                if (_activeKeys.Contains(ie.Key))
-                {
-                    _activeKeys.Remove(ie.Key);
-                }
-            }
         }
 
         public RecordSession CurrentSession

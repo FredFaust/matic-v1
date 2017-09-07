@@ -1,4 +1,5 @@
-﻿using Windows.Matic.v1.Task;
+﻿using System.Collections.Generic;
+using Windows.Matic.v1.Task;
 
 namespace Windows.Matic.v1.Recorder.Session
 {
@@ -15,11 +16,19 @@ namespace Windows.Matic.v1.Recorder.Session
             _recordingState = RecordingState.Inactive;
         }
 
-        public void AddInputEvent(InputEvent ie)
+        public void AddInputEvent(InputEvent inputEvent)
         {
             if (_recordingState == RecordingState.Active)
             {
-                _inputChain.AddInputEvent(ie);
+                _inputChain.AddInputEvent(inputEvent);
+            }
+        }
+
+        public void AddInputEvents(List<InputEvent> inputEvents)
+        {
+            if (_recordingState == RecordingState.Active)
+            {
+                _inputChain.AddInputEvents(inputEvents);
             }
         }
 

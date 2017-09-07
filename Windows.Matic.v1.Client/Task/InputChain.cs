@@ -11,9 +11,14 @@ namespace Windows.Matic.v1.Task
             _chain = new List<InputEvent>();
         }
 
-        public void AddInputEvent(InputEvent ie)
+        public void AddInputEvent(InputEvent inputEvent)
         {
-            _chain.Add(ie);
+            _chain.Add(inputEvent);
+        }
+
+        public void AddInputEvents(List<InputEvent> inputEvents)
+        {
+            _chain.AddRange(inputEvents);
         }
 
         public List<InputEvent> Chain
