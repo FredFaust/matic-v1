@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Windows.Matic.v1.Recorder.Logger
+namespace Windows.Matic.v1.Recorder.Listener
 {
     public sealed class InputListener
     {
@@ -27,18 +23,14 @@ namespace Windows.Matic.v1.Recorder.Logger
 
         private IntPtr _user32ModuleHandle = IntPtr.Zero;
         private IntPtr _keyboardHookHandle = IntPtr.Zero;
-        private KeyboardHookEventProc _keyboardHookProc;
 
-        public InputListener()
-        {
-            _keyboardHookProc = new KeyboardHookEventProc();
-        }
+        public InputListener() { }
 
-        public void StartListening()
+        public void StartListening(KeyboardHookEventProc callback)
         {
             if (!_isListening)
             {
-                hook();
+                SetKeyboardHook(callback);
                 _isListening = true;
             }
         }
@@ -47,18 +39,18 @@ namespace Windows.Matic.v1.Recorder.Logger
         {
             if (_isListening)
             {
-                unhook();
+                UnsetKeyboardHook();
                 _isListening = false;
             }
         }
 
-        public void hook()
+        public void SetKeyboardHook(KeyboardHookEventProc callback)
         {
             _user32ModuleHandle = LoadLibrary("User32");
-            _keyboardHookHandle = SetWindowsHookEx(WH_KEYBOARD_LL, _keyboardHookProc, _user32ModuleHandle, 0);
+            _keyboardHookHandle = SetWindowsHookEx(WH_KEYBOARD_LL, callback, _user32ModuleHandle, 0);
         }
 
-        public void unhook()
+        public void UnsetKeyboardHook()
         {
             UnhookWindowsHookEx(_keyboardHookHandle);
         }
@@ -84,9 +76,5 @@ namespace Windows.Matic.v1.Recorder.Logger
         }
 
         const int WH_KEYBOARD_LL = 13;
-        const int WM_KEYDOWN = 0x100;
-        const int WM_KEYUP = 0x101;
-        const int WM_SYSKEYDOWN = 0x104;
-        const int WM_SYSKEYUP = 0x105;
     }
 }

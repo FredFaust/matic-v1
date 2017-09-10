@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using Windows.Matic.v1.Recorder.Logger;
+using Windows.Matic.v1.Recorder;
 using Windows.Matic.v1.Task;
 
 namespace Windows.Matic.v1.UserControls
@@ -29,26 +29,26 @@ namespace Windows.Matic.v1.UserControls
         public Action RecordingStartedAction;
         public event EventHandler<NewTaskFinalizedEventArgs> RaiseNewTaskFinalized;
 
-        private InputLogger _inputLogger;
+        private InputRecorderMediator _inputRecorder;
 
         public NewTask()
         {
             InitializeComponent();
 
-            _inputLogger = new InputLogger();
-            _inputLogger.RecordingDoneAction = FinalizeUserTask;
+            _inputRecorder = new InputRecorderMediator();
+            _inputRecorder.RecordingDoneAction = FinalizeUserTask;
         }
 
         private void Button_Click_StartRecording(object sender, RoutedEventArgs e)
         {
             btn_start_recording.IsEnabled = false;
             RecordingStartedAction?.Invoke();
-            _inputLogger.StartLogging();
+            _inputRecorder.StartRecording();
         }
 
         public void FinalizeUserTask()
         {
-            UserTask ut = new UserTask(txtTaskName.Text, _inputLogger.CurrentSession.InputChain);
+            UserTask ut = new UserTask(txtTaskName.Text, _inputRecorder.CurrentSession.InputChain);
             OnRaiseNewTaskFinalized(ut);
         }
 

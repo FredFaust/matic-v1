@@ -38,7 +38,7 @@ namespace Windows.Matic.v1.Recorder.Session
             _recordingState = RecordingState.Active;
         }
 
-        public void DoneRecording()
+        public void StopRecording()
         {
             _recordingState = RecordingState.Inactive;
             _sessionState = SessionState.Finished;

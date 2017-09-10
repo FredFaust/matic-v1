@@ -61,11 +61,11 @@
     </ApplicationDefinition>
     <Compile Include="Player\InputSender.cs" />
     <Compile Include="Player\TaskPlayer.cs" />
-    <Compile Include="Recorder\Logger\InputListener.cs" />
+    <Compile Include="Recorder\InputRecorderMediator.cs" />
+    <Compile Include="Recorder\Handler\InputHandler.cs" />
+    <Compile Include="Recorder\Listener\InputListener.cs" />
     <Compile Include="Task\InputEvent.cs" />
     <Compile Include="Task\InputChain.cs" />
-    <Compile Include="Recorder\Logger\InputLogger.cs" />
-    <Compile Include="Recorder\Logger\KeyListener.cs" />
     <Compile Include="Recorder\Session\RecordSession.cs" />
     <Compile Include="Recorder\Session\States.cs" />
     <Compile Include="Task\UserTask.cs" />
