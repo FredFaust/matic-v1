@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using Windows.Matic.v1.Recorder;
@@ -48,6 +50,14 @@ namespace Windows.Matic.v1.UserControls
 
         public void FinalizeUserTask()
         {
+            StringBuilder sb = new StringBuilder();
+            foreach(InputEvent ie in _inputRecorder.CurrentSession.InputChain.Chain)
+            {
+                sb.Append(ie);
+                sb.AppendLine();
+            }
+            File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.txt", sb.ToString());
+
             UserTask ut = new UserTask(txtTaskName.Text, _inputRecorder.CurrentSession.InputChain);
             OnRaiseNewTaskFinalized(ut);
         }

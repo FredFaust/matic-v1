@@ -182,40 +182,82 @@ namespace Windows.Matic.v1.Recorder.Handler
 
         private void RemoveReservedCommandEventsFromBuffer(Keys reservedKey)
         {
-            int iReservedKey = _inputEventsBuffer.FindLastIndex(e => e.Key == reservedKey);
-            int iAltKey = _inputEventsBuffer.FindLastIndex(e => e.Key == Keys.LMenu || e.Key == Keys.RMenu);
-            int iControlKey = _inputEventsBuffer.FindLastIndex(e => e.Key == Keys.LControlKey || e.Key == Keys.RControlKey);
-
-            // We could consider that all indexes are > -1 but let's play it semi-safe
-            if (iReservedKey != -1)
+            int iLastElement = _inputEventsBuffer.Count - 1;
+            if (_inputEventsBuffer[iLastElement].Key == reservedKey)
             {
                 List<int> indexesToRemove = new List<int>();
-                _inputEventsBuffer.RemoveAt(iReservedKey);
+                indexesToRemove.Add(iLastElement);
 
-                if (iReservedKey - iAltKey == 1)
+                Keys beforeLastKey = _inputEventsBuffer[iLastElement - 1].Key;
+                if (beforeLastKey == Keys.LMenu || beforeLastKey == Keys.RMenu)
                 {
-                    // Alt key was pressed just before the reserved key
-                    indexesToRemove.Add(iAltKey);
-                    if (iReservedKey - iControlKey == 2)
+                    indexesToRemove.Add(iLastElement - 1);
+
+                    bool isSuite = true;
+                    for (int i = iLastElement - 2; i >= 0 && isSuite; i--)
                     {
-                        indexesToRemove.Add(iControlKey);
+                        if (_inputEventsBuffer[i].Key == beforeLastKey)
+                        {
+                            indexesToRemove.Add(i);
+                        }
+                        else if (_inputEventsBuffer[i].Key == Keys.LControlKey || _inputEventsBuffer[i].Key == Keys.RControlKey)
+                        {
+                            indexesToRemove.Add(i);
+                        }
+                        else
+                        {
+                            isSuite = false;
+                        }
                     }
                 }
-                else if (iReservedKey - iControlKey == 1)
+                else if (beforeLastKey == Keys.LControlKey || beforeLastKey == Keys.RControlKey)
                 {
-                    // Ctrl key was pressed just before the reserved key
-                    indexesToRemove.Add(iControlKey);
-                    if (iReservedKey - iAltKey == 2)
+                    indexesToRemove.Add(iLastElement - 1);
+
+                    bool isSuite = true;
+                    for (int i = iLastElement - 2; i >= 0 && isSuite; i--)
                     {
-                        indexesToRemove.Add(iAltKey);
+                        if (_inputEventsBuffer[i].Key == beforeLastKey)
+                        {
+                            indexesToRemove.Add(i);
+                        }
+                        else if (_inputEventsBuffer[i].Key == Keys.LMenu || _inputEventsBuffer[i].Key == Keys.RMenu)
+                        {
+                            indexesToRemove.Add(i);
+                        }
+                        else
+                        {
+                            isSuite = false;
+                        }
                     }
                 }
 
-                foreach(int i in indexesToRemove)
+                foreach (int i in indexesToRemove)
                 {
                     _inputEventsBuffer.RemoveAt(i);
                 }
-            }   
+
+                // Repass through the buffer and make sure no keys are being hold down
+                // because of the use case where a user chains command with Ctrl and ends
+                // up with a reserved command
+                List<Keys> simulatedActiveKeys = new List<Keys>();
+                foreach(InputEvent ie in _inputEventsBuffer)
+                {
+                    if (ie.EventType == KeyEventType.Down && !simulatedActiveKeys.Contains(ie.Key))
+                    {
+                        simulatedActiveKeys.Add(ie.Key);
+                    }
+                    else if (ie.EventType == KeyEventType.Up && simulatedActiveKeys.Contains(ie.Key))
+                    {
+                        simulatedActiveKeys.Remove(ie.Key);
+                    }
+                }
+
+                foreach(Keys k in simulatedActiveKeys)
+                {
+                    _inputEventsBuffer.Add(new InputEvent(k, KeyEventType.Down, 50));
+                }
+            }
         }
         #endregion
 

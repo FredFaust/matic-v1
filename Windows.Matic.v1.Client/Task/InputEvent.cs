@@ -29,6 +29,11 @@ namespace Windows.Matic.v1.Task
         {
             get { return _eventDelay; }
         }
+
+        public override string ToString()
+        {
+            return "Event - " + _key + " " + _eventType;
+        }
     }
 
     public enum KeyEventType

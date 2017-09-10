@@ -5,9 +5,9 @@ namespace Windows.Matic.v1.Recorder.Session
 {
     public class RecordSession
     {
+        private InputChain _inputChain;
         private SessionState _sessionState;
         private RecordingState _recordingState;
-        private InputChain _inputChain;
 
         public RecordSession()
         {
