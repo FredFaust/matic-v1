@@ -51,7 +51,7 @@ namespace Windows.Matic.v1.UserControls
         public void FinalizeUserTask()
         {
             StringBuilder sb = new StringBuilder();
-            foreach(InputEvent ie in _inputRecorder.CurrentSession.InputChain.Chain)
+            foreach(KeyboardEvent ie in _inputRecorder.CurrentSession.InputChain.Chain)
             {
                 sb.Append(ie);
                 sb.AppendLine();

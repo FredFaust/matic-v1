@@ -36,7 +36,7 @@ namespace Windows.Matic.v1.Recorder
         public void StartRecording()
         {
             _currentSession.StartRecording();
-            _inputListener.StartListening(_inputHandler.HandleKeyboardEventProc);
+            _inputListener.StartListening(_inputHandler.HandleKeyboardEventProc, _inputHandler.HandleMouseEventProc);
         }
 
         public void StopRecording()

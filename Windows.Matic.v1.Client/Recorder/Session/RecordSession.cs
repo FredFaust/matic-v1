@@ -16,7 +16,7 @@ namespace Windows.Matic.v1.Recorder.Session
             _recordingState = RecordingState.Inactive;
         }
 
-        public void AddInputEvent(InputEvent inputEvent)
+        public void AddInputEvent(KeyboardEvent inputEvent)
         {
             if (_recordingState == RecordingState.Active)
             {

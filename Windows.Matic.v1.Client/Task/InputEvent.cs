@@ -1,45 +1,14 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Windows.Matic.v1.Task
 {
     public class InputEvent
     {
-        private Keys _key;
-        private KeyEventType _eventType;
-        private int _eventDelay;
-
-        public InputEvent(Keys k, KeyEventType ket, int delay)
-        {
-            _key = k;
-            _eventType = ket;
-            _eventDelay = delay;
-        }
-
-        public Keys Key
-        {
-            get { return _key; }
-        }
-
-        public KeyEventType EventType
-        {
-            get { return _eventType; }
-        }
-
-        public int EventDelay
-        {
-            get { return _eventDelay; }
-        }
-
-        public override string ToString()
-        {
-            return "Event - " + _key + " " + _eventType;
-        }
-    }
-
-    public enum KeyEventType
-    {
-        None,
-        Down,
-        Up
+        protected int _delay;
+        public int DelayBeforeEvent { get { return _delay; } }
     }
 }

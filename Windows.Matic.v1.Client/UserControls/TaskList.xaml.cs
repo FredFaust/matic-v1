@@ -12,7 +12,9 @@ namespace Windows.Matic.v1.UserControls
     /// </summary>
     public partial class TaskList : UserControl
     {
-        public Action NewTaskLinkClickedAction;
+        public Action StartTaskExecution;
+        public Action TaskExecutionDone;
+        public Action NavigateToNewTaskPage;
 
         public UserTask HardcodedTask;
         private List<UserTask> _userTasks;
@@ -27,16 +29,18 @@ namespace Windows.Matic.v1.UserControls
 
         private void Button_Click_CreateNewTask(object sender, RoutedEventArgs e)
         {
-            NewTaskLinkClickedAction?.Invoke();
+            NavigateToNewTaskPage?.Invoke();
         }
 
         private void Button_Click_RunTask(object sender, RoutedEventArgs e)
         {
-            UserTask ut = ((Button)sender).Tag as UserTask;
-            MessageBox.Show(ut.TaskName);
+            UserTask userTask = ((Button)sender).Tag as UserTask;
 
-            TaskPlayer tp = new TaskPlayer();
-            tp.Execute(ut);
+            TaskPlayer taskPlayer = new TaskPlayer();
+
+            StartTaskExecution?.Invoke();
+            taskPlayer.Execute(userTask);
+            TaskExecutionDone?.Invoke();
         }
     }
 }

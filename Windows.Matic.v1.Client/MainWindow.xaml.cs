@@ -25,6 +25,11 @@ namespace Windows.Matic.v1
             WindowState = WindowState.Minimized;
         }
 
+        public void RestoreClientWindow()
+        {
+            WindowState = WindowState.Normal;
+        }
+
         public void NavigateToNewTaskPage()
         {
             NewTask nt = new NewTask();
@@ -37,13 +42,15 @@ namespace Windows.Matic.v1
         {
             _userDefinedTasks.Add(ea.UserTask);
             SwitchViewToTaskList();
-            WindowState = WindowState.Normal;
+            RestoreClientWindow();
         }
 
         private void SwitchViewToTaskList()
         {
             TaskList tl = new TaskList(_userDefinedTasks);
-            tl.NewTaskLinkClickedAction = NavigateToNewTaskPage;
+            tl.NavigateToNewTaskPage = NavigateToNewTaskPage;
+            tl.StartTaskExecution = MinimizeClientWindow;
+            tl.TaskExecutionDone = RestoreClientWindow;
             contentControl.Content = tl;
         }
 

@@ -34,7 +34,7 @@ namespace Windows.Matic.v1.Player
             //Nothing for now
         }
 
-        public void SendKeyDown(Keys keyCode)
+        public void SendKeyDownEvent(Keys keyCode)
         {
             Input input = new Input
             {
@@ -54,7 +54,7 @@ namespace Windows.Matic.v1.Player
                 throw new Exception();
         }
 
-        public void SendKeyUp(Keys keyCode)
+        public void SendKeyUpEvent(Keys keyCode)
         {
             Input input = new Input
             {
@@ -74,35 +74,24 @@ namespace Windows.Matic.v1.Player
                 throw new Exception();
         }
 
-        public void SendKeyPress(Keys keyCode)
+        public void SendMouseEvent(int x, int y, int flags, int mouseData)
         {
             Input input = new Input
             {
                 Type = 1
             };
-            input.Data.Keyboard = new KeyboardInput()
+            input.Data.Mouse = new MouseInput()
             {
-                Vk = (ushort)keyCode,
-                Scan = 0,
-                Flags = (uint)KeyEventF.KeyDown,
-                Time = 0,
-                ExtraInfo = IntPtr.Zero,
-            };
-
-            Input input2 = new Input
-            {
-                Type = 1
-            };
-            input2.Data.Keyboard = new KeyboardInput()
-            {
-                Vk = (ushort)keyCode,
-                Scan = 0,
-                Flags = (uint)KeyEventF.KeyUp,
+                X = x,
+                Y = y,
+                MouseData = (uint)mouseData,
+                Flags = (uint)flags,
                 Time = 0,
                 ExtraInfo = IntPtr.Zero
             };
-            Input[] inputs = new Input[] { input, input2 };
-            if (SendInput(2, inputs, Marshal.SizeOf(typeof(Input))) == 0)
+
+            Input[] inputs = new Input[] { input };
+            if (SendInput(1, inputs, Marshal.SizeOf(typeof(Input))) == 0)
                 throw new Exception();
         }
 

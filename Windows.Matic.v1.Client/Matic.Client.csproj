@@ -65,9 +65,11 @@
     <Compile Include="Recorder\Handler\InputHandler.cs" />
     <Compile Include="Recorder\Listener\InputListener.cs" />
     <Compile Include="Task\InputEvent.cs" />
+    <Compile Include="Task\KeyboardEvent.cs" />
     <Compile Include="Task\InputChain.cs" />
     <Compile Include="Recorder\Session\RecordSession.cs" />
     <Compile Include="Recorder\Session\States.cs" />
+    <Compile Include="Task\MouseEvent.cs" />
     <Compile Include="Task\UserTask.cs" />
     <Compile Include="UserControls\NewTask.xaml.cs">
       <DependentUpon>NewTask.xaml</DependentUpon>
