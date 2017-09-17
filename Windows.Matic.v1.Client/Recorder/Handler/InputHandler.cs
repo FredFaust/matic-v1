@@ -187,53 +187,7 @@ namespace Windows.Matic.v1.Recorder.Handler
         private Keys _reservedKeyResume = Keys.R;
         private Keys _reservedKeyDone = Keys.D;
 
-        private bool ReservedCommandFoundInActiveKeys()
-        {
-            bool reservedCommandFound = false;
-
-            if (CurrentActiveKeysIsReservedCommand(_reservedKeyPause))
-            {
-                reservedCommandFound = true;
-                ReservedCommandFoundAction = HandleReservedCommandPause;
-            }
-            else if (CurrentActiveKeysIsReservedCommand(_reservedKeyResume))
-            {
-                reservedCommandFound = true;
-                ReservedCommandFoundAction = HandleReservedCommandResume;
-            }
-            else if (CurrentActiveKeysIsReservedCommand(_reservedKeyDone))
-            {
-                reservedCommandFound = true;
-                ReservedCommandFoundAction = HandleReservedCommandDone;
-            }
-
-            return reservedCommandFound;
-        }
-
-        private bool CurrentActiveKeysIsReservedCommand(Keys reservedKey)
-        {
-            if (!ReservedModifierKeysPressed())
-            {
-                return false;
-            }
-            return _activeKeys.Contains(reservedKey) && _activeKeys.Count == 3;
-        }
-
-        private bool ReservedModifierKeysPressed()
-        {
-            bool ctrlKeyPresent = false;
-            bool altKeyPresent = false;
-            if (_activeKeys.Contains(Keys.LControlKey) || _activeKeys.Contains(Keys.RControlKey))
-            {
-                ctrlKeyPresent = true;
-            }
-            if (_activeKeys.Contains(Keys.LMenu) || _activeKeys.Contains(Keys.RMenu))
-            {
-                altKeyPresent = true;
-            }
-
-            return ctrlKeyPresent && altKeyPresent;
-        }
+        
 
         private void RemoveReservedCommandEventsFromBuffer(Keys reservedKey)
         {

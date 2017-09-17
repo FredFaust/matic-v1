@@ -64,6 +64,8 @@
     <Compile Include="Recorder\InputRecorderMediator.cs" />
     <Compile Include="Recorder\Handler\InputHandler.cs" />
     <Compile Include="Recorder\Listener\InputListener.cs" />
+    <Compile Include="Recorder\ReservedCommands\ReservedCommands.cs" />
+    <Compile Include="Recorder\ReservedCommands\ReservedCommandChecker.cs" />
     <Compile Include="Task\InputEvent.cs" />
     <Compile Include="Task\KeyboardEvent.cs" />
     <Compile Include="Task\InputChain.cs" />
