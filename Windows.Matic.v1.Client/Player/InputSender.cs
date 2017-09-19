@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.Matic.v1.Task;
 
 namespace Windows.Matic.v1.Player
 {
@@ -74,7 +75,7 @@ namespace Windows.Matic.v1.Player
                 throw new Exception();
         }
 
-        public void SendMouseEvent(int x, int y, int flags, int mouseData)
+        public void SendMouseEvent(MouseHookEventStruct eventData)
         {
             Input input = new Input
             {
@@ -82,10 +83,10 @@ namespace Windows.Matic.v1.Player
             };
             input.Data.Mouse = new MouseInput()
             {
-                X = x,
-                Y = y,
-                MouseData = (uint)mouseData,
-                Flags = (uint)flags,
+                X = eventData.pt.x,
+                Y = eventData.pt.y,
+                MouseData = (uint)eventData.mouseData,
+                Flags = (uint)eventData.flags,
                 Time = 0,
                 ExtraInfo = IntPtr.Zero
             };

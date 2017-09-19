@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Windows.Matic.v1.Task;
 
 namespace Windows.Matic.v1.Recorder.Listener
 {
@@ -69,17 +70,8 @@ namespace Windows.Matic.v1.Recorder.Listener
         [DllImport("kernel32.dll")]
         static extern IntPtr LoadLibrary(string lpFileName);
 
-        public delegate int MouseHookEventProc(int code, int wParam, ref MouseHookEventStruct lParam);
+        public delegate int MouseHookEventProc(int code, int wParam, IntPtr lParam);
         public delegate int KeyboardHookEventProc(int code, int wParam, ref KeyboardHookEventStruct lParam);
-
-        public struct MouseHookEventStruct
-        {
-            public Point pt;
-            public int mouseData;
-            public int flags;
-            public int time;
-            public int dwExtraInfo;
-        }
 
         public struct KeyboardHookEventStruct
         {
@@ -87,13 +79,7 @@ namespace Windows.Matic.v1.Recorder.Listener
             public uint scanCode;
             public int flags;
             public int time;
-            public int dwExtraInfo;
-        }
-
-        public struct Point
-        {
-            public int x;
-            public int y;
+            public IntPtr dwExtraInfo;
         }
 
         const int WH_MOUSE_LL = 14;

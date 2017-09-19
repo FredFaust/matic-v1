@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Windows.Matic.v1.Recorder.ReservedCommands;
 using Windows.Matic.v1.Task;
@@ -65,23 +66,25 @@ namespace Windows.Matic.v1.Recorder.Handler
             return 0;
         }
 
-        public int HandleMouseEventProc(int code, int wParam, ref MouseHookEventStruct lParam)
+        public int HandleMouseEventProc(int code, int wParam, IntPtr lParam)
         {
             if (code >= 0 && wParam != WM_MOUSEMOVE)
             {
                 int delay = GetDelaySinceLastEvent();
 
+                MouseHookEventStruct eventData = (MouseHookEventStruct)Marshal.PtrToStructure(lParam, typeof(MouseHookEventStruct));
+
                 if ((wParam == WM_LBUTTONDOWN || wParam == WM_RBUTTONDOWN))
                 {
-                    HandleNewInputEvent(new MouseEvent(lParam.pt.x, lParam.pt.y, lParam.flags, lParam.mouseData, MouseEventType.Down, delay));
+                    HandleNewInputEvent(new MouseEvent(eventData, MouseEventType.Down, delay));
                 }
                 else if ((wParam == WM_LBUTTONUP || wParam == WM_RBUTTONUP))
                 {
-                    HandleNewInputEvent(new MouseEvent(lParam.pt.x, lParam.pt.y, lParam.flags, lParam.mouseData, MouseEventType.Up, delay));
+                    HandleNewInputEvent(new MouseEvent(eventData, MouseEventType.Up, delay));
                 }
                 else
                 {
-                    HandleNewInputEvent(new MouseEvent(lParam.pt.x, lParam.pt.y, lParam.flags, lParam.mouseData, MouseEventType.None, delay));
+                    HandleNewInputEvent(new MouseEvent(eventData, MouseEventType.None, delay));
                 }
             }
 

@@ -1,41 +1,23 @@
-﻿namespace Windows.Matic.v1.Task
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace Windows.Matic.v1.Task
 {
     public class MouseEvent : InputEvent
     {
-        private int _posX;
-        private int _posY;
-        private int _flags;
-        private int _mouseData;
         private MouseEventType _eventType;
+        private MouseHookEventStruct _eventData;
 
-        public MouseEvent(int x, int y, int flags, int mouseData, MouseEventType eventType, int delay)
+        public MouseEvent(MouseHookEventStruct eventData, MouseEventType eventType, int delay)
         {
-            _posX = x;
-            _posY = y;
-            _flags = flags;
             _delay = delay;
-            _mouseData = mouseData;
-            _eventType = eventType;
+            _eventType = EventType;
+            _eventData = eventData;
         }
 
-        public int PosX
+        public MouseHookEventStruct EventData
         {
-            get { return _posX; }
-        }
-
-        public int PosY
-        {
-            get { return _posY; }
-        }
-
-        public int Flags
-        {
-            get { return _flags; }
-        }
-
-        public int MouseData
-        {
-            get { return _mouseData; }
+            get { return _eventData; }
         }
 
         public MouseEventType EventType
@@ -45,8 +27,25 @@
 
         public override string ToString()
         {
-            return "MouseEvent - " + _mouseData + " " + _eventType;
+            return "MouseEvent -  TODO "; // + _mouseData + " " + _eventType;
         }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MouseHookEventStruct
+    {
+        public Point pt;
+        public uint mouseData;
+        public uint flags;
+        public uint time;
+        public IntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Point
+    {
+        public int x;
+        public int y;
     }
 
     public enum MouseEventType

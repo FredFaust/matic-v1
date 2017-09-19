@@ -43,7 +43,7 @@ namespace Windows.Matic.v1.Player
 
         private void ExecuteMouseEvent(MouseEvent me)
         {
-            _inputSender.SendMouseEvent(me.PosX, me.PosY, me.Flags, me.MouseData);
+            _inputSender.SendMouseEvent(me.EventData);
         }
     }
 }
