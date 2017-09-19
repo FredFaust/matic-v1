@@ -50,13 +50,13 @@ namespace Windows.Matic.v1.UserControls
 
         public void FinalizeUserTask()
         {
-            StringBuilder sb = new StringBuilder();
+            /*StringBuilder sb = new StringBuilder();
             foreach(KeyboardEvent ie in _inputRecorder.CurrentSession.InputChain.Chain)
             {
                 sb.Append(ie);
                 sb.AppendLine();
             }
-            File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.txt", sb.ToString());
+            File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.txt", sb.ToString());*/
 
             UserTask ut = new UserTask(txtTaskName.Text, _inputRecorder.CurrentSession.InputChain);
             OnRaiseNewTaskFinalized(ut);

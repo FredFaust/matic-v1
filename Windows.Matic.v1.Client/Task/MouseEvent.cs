@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Windows.Matic.v1.Task
+﻿namespace Windows.Matic.v1.Task
 {
     public class MouseEvent : InputEvent
     {
@@ -51,7 +45,7 @@ namespace Windows.Matic.v1.Task
 
         public override string ToString()
         {
-            return "KeyboardEvent - " + _mouseData + " " + _eventType;
+            return "MouseEvent - " + _mouseData + " " + _eventType;
         }
     }
 

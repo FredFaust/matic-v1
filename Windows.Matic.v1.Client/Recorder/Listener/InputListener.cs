@@ -75,18 +75,18 @@ namespace Windows.Matic.v1.Recorder.Listener
         public struct MouseHookEventStruct
         {
             public Point pt;
-            public int time;
-            public int flags;
             public int mouseData;
+            public int flags;
+            public int time;
             public int dwExtraInfo;
         }
 
         public struct KeyboardHookEventStruct
         {
-            public int time;
-            public int flags;
             public int vkCode;
-            public int scanCode;     
+            public uint scanCode;
+            public int flags;
+            public int time;
             public int dwExtraInfo;
         }
 

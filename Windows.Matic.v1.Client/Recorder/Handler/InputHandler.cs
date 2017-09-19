@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Windows.Matic.v1.Recorder.ReservedCommands;
@@ -22,6 +23,8 @@ namespace Windows.Matic.v1.Recorder.Handler
 
         private InputRecorderMediator _mediatorInstance;
 
+        private string _logFileFullName;
+
         public InputHandler(InputRecorderMediator irm)
         {
             _mediatorInstance = irm;
@@ -30,6 +33,10 @@ namespace Windows.Matic.v1.Recorder.Handler
 
             _inputEventsBuffer = new List<InputEvent>();
             _reservedCommandChecker = new ReservedCommandChecker();
+
+            _logFileFullName = $@"{Directory.GetCurrentDirectory()}\RecordSessionLogs_{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.txt";
+            string text = "Logs for the latest record session : \n";
+            File.WriteAllText(_logFileFullName, text);
         }
 
         public int HandleKeyboardEventProc(int code, int wParam, ref KeyboardHookEventStruct lParam)
@@ -102,6 +109,11 @@ namespace Windows.Matic.v1.Recorder.Handler
                 _inputEventsBuffer.Add(keyboardEvent);
             }
 
+            using (StreamWriter file = new StreamWriter(_logFileFullName, true))
+            {
+                file.WriteLine(keyboardEvent.ToString());
+            }
+
             if (keyboardEvent.EventType == KeyEventType.Down && !_reservedCommandInProgress && !_activeKeys.Contains(keyboardEvent.Key))
             {
                 _activeKeys.Add(keyboardEvent.Key);
@@ -128,6 +140,11 @@ namespace Windows.Matic.v1.Recorder.Handler
             if (!_reservedCommandInProgress)
             {
                 _inputEventsBuffer.Add(mouseEvent);
+            }
+
+            using (StreamWriter file = new StreamWriter(_logFileFullName, true))
+            {
+                file.WriteLine(mouseEvent.ToString());
             }
 
             if (mouseEvent.EventType == MouseEventType.Down && !_reservedCommandInProgress)
