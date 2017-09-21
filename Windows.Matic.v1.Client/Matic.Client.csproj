@@ -59,6 +59,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\User32References.cs" />
+    <Compile Include="Common\User32Utils.cs" />
     <Compile Include="Player\InputSender.cs" />
     <Compile Include="Player\TaskPlayer.cs" />
     <Compile Include="Recorder\InputRecorderMediator.cs" />

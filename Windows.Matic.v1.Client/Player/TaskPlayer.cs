@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Windows.Matic.v1.Common;
 using Windows.Matic.v1.Task;
 
 namespace Windows.Matic.v1.Player
@@ -43,7 +43,7 @@ namespace Windows.Matic.v1.Player
 
         private void ExecuteMouseEvent(MouseEvent me)
         {
-            _inputSender.SendMouseEvent(me.EventData);
+            _inputSender.SendMouseEvent(me.X, me.Y, me.MouseMessage);
         }
     }
 }

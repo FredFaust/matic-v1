@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Windows.Matic.v1.Task;
+using Windows.Matic.v1.Common;
 
 namespace Windows.Matic.v1.Recorder.Listener
 {
@@ -65,22 +65,13 @@ namespace Windows.Matic.v1.Recorder.Listener
         static extern IntPtr SetWindowsHookEx(int idHook, KeyboardHookEventProc callback, IntPtr hInstance, uint threadId);
         [DllImport("user32.dll")]
         static extern bool UnhookWindowsHookEx(IntPtr hInstance);
-        [DllImport("user32.dll")]
-        static extern int CallNextHookEx(IntPtr idHook, int nCode, int wParam, ref KeyboardHookEventStruct lParam);
+        /*[DllImport("user32.dll")]
+        static extern int CallNextHookEx(IntPtr idHook, int nCode, int wParam, ref KeyboardHookEventStruct lParam);*/
         [DllImport("kernel32.dll")]
         static extern IntPtr LoadLibrary(string lpFileName);
 
-        public delegate int MouseHookEventProc(int code, int wParam, IntPtr lParam);
+        public delegate int MouseHookEventProc(int code, int wParam, ref MouseHookEventStruct lParam);
         public delegate int KeyboardHookEventProc(int code, int wParam, ref KeyboardHookEventStruct lParam);
-
-        public struct KeyboardHookEventStruct
-        {
-            public int vkCode;
-            public uint scanCode;
-            public int flags;
-            public int time;
-            public IntPtr dwExtraInfo;
-        }
 
         const int WH_MOUSE_LL = 14;
         const int WH_KEYBOARD_LL = 13;

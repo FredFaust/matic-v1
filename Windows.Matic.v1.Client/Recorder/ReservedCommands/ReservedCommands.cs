@@ -9,6 +9,8 @@ namespace Windows.Matic.v1.Recorder.ReservedCommands
         {
             Dictionary<CommandNames, ReservedCommand> maticReservedCommands = new Dictionary<CommandNames, ReservedCommand>();
 
+            // TODO : Load from config
+
             maticReservedCommands.Add(CommandNames.Pause, new ReservedCommand(Keys.P, ModifierKeys.Ctrl, ModifierKeys.Alt));
             maticReservedCommands.Add(CommandNames.Resume, new ReservedCommand(Keys.R, ModifierKeys.Ctrl, ModifierKeys.Alt));
             maticReservedCommands.Add(CommandNames.Finish, new ReservedCommand(Keys.F, ModifierKeys.Ctrl, ModifierKeys.Alt));

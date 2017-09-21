@@ -149,7 +149,6 @@ namespace Windows.Matic.v1.Recorder.ReservedCommands
                     }
                 }
             }
-
             return buffer;
         }
     }

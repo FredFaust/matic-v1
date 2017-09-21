@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Windows.Matic.v1.Common;
 using Windows.Matic.v1.Recorder.ReservedCommands;
 using Windows.Matic.v1.Task;
-using static Windows.Matic.v1.Recorder.Listener.InputListener;
 
 namespace Windows.Matic.v1.Recorder.Handler
 {
@@ -47,11 +46,11 @@ namespace Windows.Matic.v1.Recorder.Handler
                 int delay = GetDelaySinceLastEvent();
                 
                 Keys key = (Keys)lParam.vkCode;
-                if ((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
+                if ((wParam == KeyboardMessages.WM_KEYDOWN || wParam == KeyboardMessages.WM_SYSKEYDOWN))
                 {
                     HandleNewInputEvent(new KeyboardEvent(key, KeyEventType.Down, delay));
                 }
-                else if ((wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
+                else if ((wParam == KeyboardMessages.WM_KEYUP || wParam == KeyboardMessages.WM_SYSKEYUP))
                 {
                     HandleNewInputEvent(new KeyboardEvent(key, KeyEventType.Up, delay));
                 }
@@ -66,26 +65,13 @@ namespace Windows.Matic.v1.Recorder.Handler
             return 0;
         }
 
-        public int HandleMouseEventProc(int code, int wParam, IntPtr lParam)
+        public int HandleMouseEventProc(int code, int wParam, ref MouseHookEventStruct lParam)
         {
-            if (code >= 0 && wParam != WM_MOUSEMOVE)
+            if (code >= 0 && wParam != MouseMessages.WM_MOUSEMOVE)
             {
                 int delay = GetDelaySinceLastEvent();
 
-                MouseHookEventStruct eventData = (MouseHookEventStruct)Marshal.PtrToStructure(lParam, typeof(MouseHookEventStruct));
-
-                if ((wParam == WM_LBUTTONDOWN || wParam == WM_RBUTTONDOWN))
-                {
-                    HandleNewInputEvent(new MouseEvent(eventData, MouseEventType.Down, delay));
-                }
-                else if ((wParam == WM_LBUTTONUP || wParam == WM_RBUTTONUP))
-                {
-                    HandleNewInputEvent(new MouseEvent(eventData, MouseEventType.Up, delay));
-                }
-                else
-                {
-                    HandleNewInputEvent(new MouseEvent(eventData, MouseEventType.None, delay));
-                }
+                HandleNewInputEvent(new MouseEvent(lParam.pt.x, lParam.pt.y, wParam, delay));
             }
 
             return 0;
@@ -150,11 +136,11 @@ namespace Windows.Matic.v1.Recorder.Handler
                 file.WriteLine(mouseEvent.ToString());
             }
 
-            if (mouseEvent.EventType == MouseEventType.Down && !_reservedCommandInProgress)
+            if (!_reservedCommandInProgress && (mouseEvent.MouseMessage == MouseMessages.WM_LBUTTONDOWN || mouseEvent.MouseMessage == MouseMessages.WM_RBUTTONDOWN))
             {
                 _activeMouseButtons++; ;
             }
-            else if (mouseEvent.EventType == MouseEventType.Up)
+            else if (mouseEvent.MouseMessage == MouseMessages.WM_LBUTTONUP || mouseEvent.MouseMessage == MouseMessages.WM_RBUTTONUP)
             {
                 _activeMouseButtons--;
                 if (!_activeKeys.Any() && _activeMouseButtons == 0)
@@ -215,24 +201,5 @@ namespace Windows.Matic.v1.Recorder.Handler
             _reservedCommandInProgress = false;
             _mediatorInstance.StopRecording();
         }
-
-        /// <summary>
-        /// Keyboard Message Identifiers
-        /// </summary>
-        const int WM_KEYDOWN = 0x100;
-        const int WM_KEYUP = 0x101;
-        const int WM_SYSKEYDOWN = 0x104;
-        const int WM_SYSKEYUP = 0x105;
-
-
-        /// <summary>
-        ///  Mouse Message Identifiers
-        /// </summary>
-        const int WM_LBUTTONDOWN = 0x0201;
-        const int WM_LBUTTONUP = 0x0202;
-        const int WM_MOUSEMOVE = 0x0200;
-        const int WM_MOUSEWHEEL = 0x020A;
-        const int WM_RBUTTONDOWN = 0x0204;
-        const int WM_RBUTTONUP = 0x0205;
     }
 }
