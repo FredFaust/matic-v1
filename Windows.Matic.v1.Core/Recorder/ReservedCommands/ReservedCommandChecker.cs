@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Windows.Matic.v1.Task;
+using Windows.Matic.v1.Core.Task;
 
-namespace Windows.Matic.v1.Recorder.ReservedCommands
+namespace Windows.Matic.v1.Core.Recorder.ReservedCommands
 {
     public class ReservedCommandChecker
     {

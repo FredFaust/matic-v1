@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Windows.Matic.v1.Common;
+using Windows.Matic.v1.Core.Common;
 
-namespace Windows.Matic.v1.Player
+namespace Windows.Matic.v1.Core.Player
 {
     sealed class InputSender
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Windows.Matic.v1.Common
+namespace Windows.Matic.v1.Core.Common
 {
     #region Mouse references
     [StructLayout(LayoutKind.Sequential)]

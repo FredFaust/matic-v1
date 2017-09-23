@@ -1,4 +1,4 @@
-﻿namespace Windows.Matic.v1.Task
+﻿namespace Windows.Matic.v1.Core.Task
 {
     public class UserTask
     {

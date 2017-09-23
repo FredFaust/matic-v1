@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Windows.Matic.v1.Task;
+using Windows.Matic.v1.Core.Task;
 
-namespace Windows.Matic.v1.Recorder.Session
+namespace Windows.Matic.v1.Core.Recorder.Session
 {
     public class RecordSession
     {

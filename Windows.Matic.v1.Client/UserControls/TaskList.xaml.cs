@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using Windows.Matic.v1.Player;
-using Windows.Matic.v1.Task;
+using Windows.Matic.v1.Core.Task;
+using Windows.Matic.v1.Core.Player;
 
-namespace Windows.Matic.v1.UserControls
+namespace Windows.Matic.v1.Client.UserControls
 {
     /// <summary>
     /// Interaction logic for MyTasks.xaml

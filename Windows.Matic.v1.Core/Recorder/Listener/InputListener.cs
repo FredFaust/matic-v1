@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Windows.Matic.v1.Common;
+using Windows.Matic.v1.Core.Common;
 
-namespace Windows.Matic.v1.Recorder.Listener
+namespace Windows.Matic.v1.Core.Recorder.Listener
 {
     public sealed class InputListener
     {

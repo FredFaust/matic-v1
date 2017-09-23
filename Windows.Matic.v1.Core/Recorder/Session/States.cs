@@ -1,4 +1,4 @@
-﻿namespace Windows.Matic.v1.Recorder.Session
+﻿namespace Windows.Matic.v1.Core.Recorder.Session
 {
     public enum RecordingState
     {

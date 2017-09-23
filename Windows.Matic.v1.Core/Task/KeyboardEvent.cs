@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Windows.Matic.v1.Task
+namespace Windows.Matic.v1.Core.Task
 {
     public class KeyboardEvent : InputEvent
     {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Windows.Matic.v1.Common
+namespace Windows.Matic.v1.Core.Common
 {
     public static class User32Utils
     {

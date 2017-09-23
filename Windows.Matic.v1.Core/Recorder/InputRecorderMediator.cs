@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Windows.Matic.v1.Recorder.Handler;
-using Windows.Matic.v1.Recorder.Listener;
-using Windows.Matic.v1.Recorder.Session;
-using Windows.Matic.v1.Task;
+using Windows.Matic.v1.Core.Recorder.Handler;
+using Windows.Matic.v1.Core.Recorder.Listener;
+using Windows.Matic.v1.Core.Recorder.Session;
+using Windows.Matic.v1.Core.Task;
 
-namespace Windows.Matic.v1.Recorder
+namespace Windows.Matic.v1.Core.Recorder
 {
     /// <summary>
     /// Serves as a Mediator between the different components required to record user input

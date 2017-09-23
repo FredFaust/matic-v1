@@ -1,9 +1,8 @@
-﻿using Windows.Matic.v1.Common;
-using Windows.Matic.v1.Task;
+﻿using Windows.Matic.v1.Core.Task;
 
-namespace Windows.Matic.v1.Player
+namespace Windows.Matic.v1.Core.Player
 {
-    class TaskPlayer
+    public class TaskPlayer
     {
         private InputSender _inputSender;
 

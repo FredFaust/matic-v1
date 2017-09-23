@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using Windows.Matic.v1.Task;
-using Windows.Matic.v1.UserControls;
+using Windows.Matic.v1.Core.Task;
+using Windows.Matic.v1.Client.UserControls;
 
-namespace Windows.Matic.v1
+namespace Windows.Matic.v1.Client
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

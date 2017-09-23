@@ -7,8 +7,8 @@
     <ProjectGuid>{013F0E58-3B10-4975-A91F-7497DE561519}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Windows.Matic.v1</RootNamespace>
-    <AssemblyName>Windows.Matic.v1</AssemblyName>
+    <RootNamespace>Windows.Matic.v1.Client</RootNamespace>
+    <AssemblyName>Windows.Matic.v1.Client</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -59,22 +59,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Common\User32References.cs" />
-    <Compile Include="Common\User32Utils.cs" />
-    <Compile Include="Player\InputSender.cs" />
-    <Compile Include="Player\TaskPlayer.cs" />
-    <Compile Include="Recorder\InputRecorderMediator.cs" />
-    <Compile Include="Recorder\Handler\InputHandler.cs" />
-    <Compile Include="Recorder\Listener\InputListener.cs" />
-    <Compile Include="Recorder\ReservedCommands\ReservedCommands.cs" />
-    <Compile Include="Recorder\ReservedCommands\ReservedCommandChecker.cs" />
-    <Compile Include="Task\InputEvent.cs" />
-    <Compile Include="Task\KeyboardEvent.cs" />
-    <Compile Include="Task\InputChain.cs" />
-    <Compile Include="Recorder\Session\RecordSession.cs" />
-    <Compile Include="Recorder\Session\States.cs" />
-    <Compile Include="Task\MouseEvent.cs" />
-    <Compile Include="Task\UserTask.cs" />
     <Compile Include="UserControls\NewTask.xaml.cs">
       <DependentUpon>NewTask.xaml</DependentUpon>
     </Compile>
@@ -142,7 +126,12 @@
   <ItemGroup>
     <Resource Include="matic.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Windows.Matic.v1.Core\Matic.Core.csproj">
+      <Project>{5558976f-cc05-4f1e-8bbb-e5a9930e87bc}</Project>
+      <Name>Matic.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

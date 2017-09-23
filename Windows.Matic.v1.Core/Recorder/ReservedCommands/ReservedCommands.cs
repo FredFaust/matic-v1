@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Windows.Matic.v1.Recorder.ReservedCommands
+namespace Windows.Matic.v1.Core.Recorder.ReservedCommands
 {
     public static class MaticReservedCommands
     {

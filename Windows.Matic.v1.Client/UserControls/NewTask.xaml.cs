@@ -1,12 +1,10 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using Windows.Matic.v1.Recorder;
-using Windows.Matic.v1.Task;
+using Windows.Matic.v1.Core.Recorder;
+using Windows.Matic.v1.Core.Task;
 
-namespace Windows.Matic.v1.UserControls
+namespace Windows.Matic.v1.Client.UserControls
 {
     public class NewTaskFinalizedEventArgs : EventArgs
     {
