@@ -1,11 +1,39 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using Windows.Matic.v1.Core.Recorder;
+using Windows.Matic.v1.Core;
 using Windows.Matic.v1.Core.Task;
 
 namespace Windows.Matic.v1.Client.UserControls
 {
+    /// <summary>
+    /// Interaction logic for RecordTask.xaml
+    /// </summary>
+    public partial class NewTask : UserControl
+    {
+        public Action RecordingStartedAction;
+        public event EventHandler<NewTaskFinalizedEventArgs> RaiseNewTaskFinalized;
+
+        public NewTask()
+        {
+            InitializeComponent();
+
+        }
+
+        private void Button_Click_StartRecording(object sender, RoutedEventArgs e)
+        {
+            btn_start_recording.IsEnabled = false;
+            RecordingStartedAction?.Invoke();
+            MaticCoreFacade.RecordTask(TaskRecordingCompleted);
+        }
+
+        public void TaskRecordingCompleted(InputChain ic)
+        {
+            UserTask task = new UserTask(txtTaskName.Text, ic);
+            RaiseNewTaskFinalized?.Invoke(this, new NewTaskFinalizedEventArgs(task));
+        }
+    }
+
     public class NewTaskFinalizedEventArgs : EventArgs
     {
         private UserTask _userTask;
@@ -18,57 +46,6 @@ namespace Windows.Matic.v1.Client.UserControls
         public UserTask UserTask
         {
             get { return _userTask; }
-        }
-    }
-
-    /// <summary>
-    /// Interaction logic for RecordTask.xaml
-    /// </summary>
-    public partial class NewTask : UserControl
-    {
-        public Action RecordingStartedAction;
-        public event EventHandler<NewTaskFinalizedEventArgs> RaiseNewTaskFinalized;
-
-        private InputRecorderMediator _inputRecorder;
-
-        public NewTask()
-        {
-            InitializeComponent();
-
-            _inputRecorder = new InputRecorderMediator();
-            _inputRecorder.RecordingDoneAction = FinalizeUserTask;
-        }
-
-        private void Button_Click_StartRecording(object sender, RoutedEventArgs e)
-        {
-            btn_start_recording.IsEnabled = false;
-            RecordingStartedAction?.Invoke();
-            _inputRecorder.StartRecording();
-        }
-
-        public void FinalizeUserTask()
-        {
-            /*StringBuilder sb = new StringBuilder();
-            foreach(KeyboardEvent ie in _inputRecorder.CurrentSession.InputChain.Chain)
-            {
-                sb.Append(ie);
-                sb.AppendLine();
-            }
-            File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.txt", sb.ToString());*/
-
-            UserTask ut = new UserTask(txtTaskName.Text, _inputRecorder.CurrentSession.InputChain);
-            OnRaiseNewTaskFinalized(ut);
-        }
-
-        private void OnRaiseNewTaskFinalized(UserTask ut)
-        {
-            EventHandler<NewTaskFinalizedEventArgs> handler = RaiseNewTaskFinalized;
-
-            if (handler != null)
-            {
-                NewTaskFinalizedEventArgs ea = new NewTaskFinalizedEventArgs(ut);
-                handler(this, ea);
-            }
         }
     }
 }

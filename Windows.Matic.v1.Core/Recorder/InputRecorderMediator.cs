@@ -16,7 +16,8 @@ namespace Windows.Matic.v1.Core.Recorder
         private InputHandler _inputHandler;
         private RecordSession _currentSession;
 
-        public Action RecordingDoneAction;
+        private TaskRecordedCallback _taskRecordedCallback;
+        public delegate void TaskRecordedCallback(InputChain ic);
 
         public InputRecorderMediator()
         {
@@ -33,8 +34,9 @@ namespace Windows.Matic.v1.Core.Recorder
             }
         }
 
-        public void StartRecording()
+        public void StartRecording(TaskRecordedCallback trc)
         {
+            _taskRecordedCallback = trc;
             _currentSession.StartRecording();
             _inputListener.StartListening(_inputHandler.HandleKeyboardEventProc, _inputHandler.HandleMouseEventProc);
         }
@@ -43,7 +45,9 @@ namespace Windows.Matic.v1.Core.Recorder
         {
             _currentSession.StopRecording();
             _inputListener.StopListening();
-            RecordingDoneAction?.Invoke();
+
+            // Invoke the callback to notify the initiator class that the recording is completed
+            _taskRecordedCallback?.Invoke(_currentSession.InputChain);
         }
 
         public void PauseRecording()

@@ -6,12 +6,14 @@ namespace Windows.Matic.v1.Core.Player
     {
         private InputSender _inputSender;
 
+        public delegate void TaskExecutedCallback(TaskExecutionResults results);
+
         public TaskPlayer()
         {
             _inputSender = InputSender.Instance;
         }
 
-        public void Execute(UserTask ut)
+        public void Execute(UserTask ut, TaskExecutedCallback callback)
         {
             foreach (InputEvent ie in ut.InputChain.Chain)
             {
@@ -26,6 +28,9 @@ namespace Windows.Matic.v1.Core.Player
                     ExecuteMouseEvent(ie as MouseEvent);
                 }
             }
+
+            // Invoke the callback to notify the initiator class that the exeuction is completed
+            callback?.Invoke(new TaskExecutionResults(true));
         }
 
         private void ExecuteKeyboardEvent(KeyboardEvent ke)

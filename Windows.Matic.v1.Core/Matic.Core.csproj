@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Common\User32References.cs" />
     <Compile Include="Common\User32Utils.cs" />
+    <Compile Include="MaticCoreFacade.cs" />
     <Compile Include="Player\InputSender.cs" />
     <Compile Include="Player\TaskPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Task\InputEvent.cs" />
     <Compile Include="Task\KeyboardEvent.cs" />
     <Compile Include="Task\MouseEvent.cs" />
+    <Compile Include="Task\TaskExecutionResults.cs" />
     <Compile Include="Task\UserTask.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Windows.Matic.v1.Core.Task;
 using Windows.Matic.v1.Core.Player;
+using Windows.Matic.v1.Core;
 
 namespace Windows.Matic.v1.Client.UserControls
 {
@@ -34,12 +35,14 @@ namespace Windows.Matic.v1.Client.UserControls
 
         private void Button_Click_RunTask(object sender, RoutedEventArgs e)
         {
-            UserTask userTask = ((Button)sender).Tag as UserTask;
-
-            TaskPlayer taskPlayer = new TaskPlayer();
+            UserTask task = ((Button)sender).Tag as UserTask;
 
             StartTaskExecution?.Invoke();
-            taskPlayer.Execute(userTask);
+            MaticCoreFacade.PlayTask(task, TaskExecutionCompleted);
+        }
+
+        public void TaskExecutionCompleted(TaskExecutionResults results)
+        {
             TaskExecutionDone?.Invoke();
         }
     }
