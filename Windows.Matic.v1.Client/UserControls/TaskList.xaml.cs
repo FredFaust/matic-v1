@@ -17,15 +17,15 @@ namespace Windows.Matic.v1.Client.UserControls
         public Action TaskExecutionDone;
         public Action NavigateToNewTaskPage;
 
-        public UserTask HardcodedTask;
-        private List<UserTask> _userTasks;
+        public RecordedTask HardcodedTask;
+        private List<RecordedTask> _recordedTasks;
 
-        public TaskList(List<UserTask> userTasks)
+        public TaskList(List<RecordedTask> recordedTasks)
         {
             InitializeComponent();
 
-            _userTasks = userTasks;
-            icUserTaskList.ItemsSource = _userTasks;
+            _recordedTasks = recordedTasks;
+            icRecordedTaskList.ItemsSource = _recordedTasks;
         }
 
         private void Button_Click_CreateNewTask(object sender, RoutedEventArgs e)
@@ -35,7 +35,7 @@ namespace Windows.Matic.v1.Client.UserControls
 
         private void Button_Click_RunTask(object sender, RoutedEventArgs e)
         {
-            UserTask task = ((Button)sender).Tag as UserTask;
+            RecordedTask task = ((Button)sender).Tag as RecordedTask;
 
             StartTaskExecution?.Invoke();
             MaticCoreFacade.PlayTask(task, TaskExecutionCompleted);

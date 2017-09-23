@@ -1,11 +1,11 @@
 ﻿namespace Windows.Matic.v1.Core.Task
 {
-    public class UserTask
+    public class RecordedTask
     {
         private string _taskName;
         private InputChain _inputChain;
 
-        public UserTask(string taskName, InputChain inputChain)
+        public RecordedTask(string taskName, InputChain inputChain)
         {
             _taskName = taskName;
             _inputChain = inputChain;

@@ -29,23 +29,18 @@ namespace Windows.Matic.v1.Client.UserControls
 
         public void TaskRecordingCompleted(InputChain ic)
         {
-            UserTask task = new UserTask(txtTaskName.Text, ic);
+            RecordedTask task = new RecordedTask(txtTaskName.Text, ic);
             RaiseNewTaskFinalized?.Invoke(this, new NewTaskFinalizedEventArgs(task));
         }
     }
 
     public class NewTaskFinalizedEventArgs : EventArgs
     {
-        private UserTask _userTask;
-
-        public NewTaskFinalizedEventArgs(UserTask userTask)
+        public NewTaskFinalizedEventArgs(RecordedTask recordedTask)
         {
-            _userTask = userTask;
+            Task = recordedTask;
         }
 
-        public UserTask UserTask
-        {
-            get { return _userTask; }
-        }
+        public RecordedTask Task {get; set;}
     }
 }
