@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Windows.Matic.v1.Core.Common;
 using Windows.Matic.v1.Core.Task;
 
 namespace Windows.Matic.v1.Core.Recorder.ReservedCommands
@@ -132,11 +133,11 @@ namespace Windows.Matic.v1.Core.Recorder.ReservedCommands
                         List<Keys> simulatedActiveKeys = new List<Keys>();
                         foreach (KeyboardEvent ie in buffer.OfType<KeyboardEvent>())
                         {
-                            if (ie.EventType == KeyEventType.Down && !simulatedActiveKeys.Contains(ie.Key))
+                            if (ie.EventFlag == KeyEventFlags.KeyDown && !simulatedActiveKeys.Contains(ie.Key))
                             {
                                 simulatedActiveKeys.Add(ie.Key);
                             }
-                            else if (ie.EventType == KeyEventType.Up && simulatedActiveKeys.Contains(ie.Key))
+                            else if (ie.EventFlag == KeyEventFlags.KeyUp && simulatedActiveKeys.Contains(ie.Key))
                             {
                                 simulatedActiveKeys.Remove(ie.Key);
                             }
@@ -144,7 +145,7 @@ namespace Windows.Matic.v1.Core.Recorder.ReservedCommands
 
                         foreach (Keys k in simulatedActiveKeys)
                         {
-                            buffer.Add(new KeyboardEvent(k, KeyEventType.Down, 50));
+                            buffer.Add(new KeyboardEvent(k, KeyEventFlags.KeyUp, 50));
                         }
                     }
                 }

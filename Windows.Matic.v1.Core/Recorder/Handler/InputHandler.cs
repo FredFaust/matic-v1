@@ -48,11 +48,11 @@ namespace Windows.Matic.v1.Core.Recorder.Handler
                 Keys key = (Keys)lParam.vkCode;
                 if ((wParam == KeyboardMessages.WM_KEYDOWN || wParam == KeyboardMessages.WM_SYSKEYDOWN))
                 {
-                    HandleNewInputEvent(new KeyboardEvent(key, KeyEventType.Down, delay));
+                    HandleNewInputEvent(new KeyboardEvent(key, KeyEventFlags.KeyDown, delay));
                 }
                 else if ((wParam == KeyboardMessages.WM_KEYUP || wParam == KeyboardMessages.WM_SYSKEYUP))
                 {
-                    HandleNewInputEvent(new KeyboardEvent(key, KeyEventType.Up, delay));
+                    HandleNewInputEvent(new KeyboardEvent(key, KeyEventFlags.KeyUp, delay));
                 }
             }
 
@@ -103,7 +103,7 @@ namespace Windows.Matic.v1.Core.Recorder.Handler
                 file.WriteLine(keyboardEvent.ToString());
             }
 
-            if (keyboardEvent.EventType == KeyEventType.Down && !_reservedCommandInProgress && !_activeKeys.Contains(keyboardEvent.Key))
+            if (keyboardEvent.EventFlag == KeyEventFlags.KeyDown && !_reservedCommandInProgress && !_activeKeys.Contains(keyboardEvent.Key))
             {
                 _activeKeys.Add(keyboardEvent.Key);
                 CommandNames commandFound = _reservedCommandChecker.Check(_activeKeys);
@@ -113,7 +113,7 @@ namespace Windows.Matic.v1.Core.Recorder.Handler
                     InvokeReservedCommandAction(commandFound);
                 }
             }
-            else if (keyboardEvent.EventType == KeyEventType.Up && _activeKeys.Contains(keyboardEvent.Key))
+            else if (keyboardEvent.EventFlag == KeyEventFlags.KeyUp && _activeKeys.Contains(keyboardEvent.Key))
             {
                 _activeKeys.Remove(keyboardEvent.Key);
                 if (!_activeKeys.Any() && _activeMouseButtons == 0)

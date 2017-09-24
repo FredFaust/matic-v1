@@ -1,17 +1,18 @@
 ﻿using System.Windows.Forms;
+using Windows.Matic.v1.Core.Common;
 
 namespace Windows.Matic.v1.Core.Task
 {
     public class KeyboardEvent : InputEvent
     {
         private Keys _key;
-        private KeyEventType _eventType;
+        private KeyEventFlags _eventFlag;
 
-        public KeyboardEvent(Keys k, KeyEventType eventType, int delay)
+        public KeyboardEvent(Keys k, KeyEventFlags eventFlag, int delay)
         {
             _key = k;
             _delay = delay;
-            _eventType = eventType;
+            _eventFlag = eventFlag;
         }
 
         public Keys Key
@@ -19,21 +20,14 @@ namespace Windows.Matic.v1.Core.Task
             get { return _key; }
         }
 
-        public KeyEventType EventType
+        public KeyEventFlags EventFlag
         {
-            get { return _eventType; }
+            get { return _eventFlag; }
         }
 
         public override string ToString()
         {
-            return "KeyboardEvent - " + _key + " " + _eventType;
+            return "KeyboardEvent - " + _key + " " + _eventFlag;
         }
-    }
-
-    public enum KeyEventType
-    {
-        None,
-        Down,
-        Up
     }
 }

@@ -13,41 +13,26 @@ namespace Windows.Matic.v1.Core.Player
             _inputSender = InputSender.Instance;
         }
 
-        public void Execute(ComputerTask ut, TaskExecutedCallback callback)
+        public void Execute(ComputerTask task, TaskExecutedCallback callback)
         {
-            foreach (InputEvent ie in ut.InputChain.Chain)
+            foreach (InputEvent ie in task.InputChain.Chain)
             {
                 System.Threading.Thread.Sleep(ie.DelayBeforeEvent);
                 
                 if (ie is KeyboardEvent)
                 {
-                    ExecuteKeyboardEvent(ie as KeyboardEvent);
+                    KeyboardEvent ke = ie as KeyboardEvent;
+                    _inputSender.SendKeyboardEvent(ke.Key, (uint)ke.EventFlag);
                 }
                 else if (ie is MouseEvent)
                 {
-                    ExecuteMouseEvent(ie as MouseEvent);
+                    MouseEvent me = ie as MouseEvent;
+                    _inputSender.SendMouseEvent(me.X, me.Y, me.MouseMessage);
                 }
             }
 
             // Invoke the callback to notify the initiator class that the exeuction is completed
             callback?.Invoke(new TaskExecutionResults(true));
-        }
-
-        private void ExecuteKeyboardEvent(KeyboardEvent ke)
-        {
-            if (ke.EventType == KeyEventType.Down)
-            {
-                _inputSender.SendKeyDownEvent(ke.Key);
-            }
-            else if (ke.EventType == KeyEventType.Up)
-            {
-                _inputSender.SendKeyUpEvent(ke.Key);
-            }
-        }
-
-        private void ExecuteMouseEvent(MouseEvent me)
-        {
-            _inputSender.SendMouseEvent(me.X, me.Y, me.MouseMessage);
         }
     }
 }

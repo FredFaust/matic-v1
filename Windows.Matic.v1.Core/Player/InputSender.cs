@@ -31,6 +31,13 @@ namespace Windows.Matic.v1.Core.Player
             //Nothing for now
         }
 
+        public void SendKeyboardEvent(Keys keyCode, uint keyEventFlag)
+        {
+            OSInput input = GetInputToSend(keyCode, keyEventFlag);
+            if (SendInput(1, ref input, Marshal.SizeOf(typeof(OSInput))) == 0)
+                throw new Exception();
+        }
+
         public void SendKeyDownEvent(Keys keyCode)
         {
             OSInput input = GetInputToSend(keyCode, (uint)KeyEventFlags.KeyDown);
