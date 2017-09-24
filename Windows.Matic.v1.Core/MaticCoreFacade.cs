@@ -14,7 +14,7 @@ namespace Windows.Matic.v1.Core
             inputRecorder.StartRecording(callback);
         }
 
-        public static void PlayTask(RecordedTask task, TaskExecutedCallback callback)
+        public static void PlayTask(ComputerTask task, TaskExecutedCallback callback)
         {
             TaskPlayer taskPlayer = new TaskPlayer();
             taskPlayer.Execute(task, callback);

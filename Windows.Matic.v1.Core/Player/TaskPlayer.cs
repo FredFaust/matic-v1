@@ -13,7 +13,7 @@ namespace Windows.Matic.v1.Core.Player
             _inputSender = InputSender.Instance;
         }
 
-        public void Execute(RecordedTask ut, TaskExecutedCallback callback)
+        public void Execute(ComputerTask ut, TaskExecutedCallback callback)
         {
             foreach (InputEvent ie in ut.InputChain.Chain)
             {

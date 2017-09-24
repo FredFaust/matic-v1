@@ -10,12 +10,12 @@ namespace Windows.Matic.v1.Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<RecordedTask> _recordedTasks;
+        private List<ComputerTask> _computerTasks;
 
         public MainWindow()
         {
             InitializeComponent();
-            _recordedTasks = new List<RecordedTask>();
+            _computerTasks = new List<ComputerTask>();
 
             SwitchViewToTaskList();
         }
@@ -40,14 +40,14 @@ namespace Windows.Matic.v1.Client
 
         public void HandleNewTaskFinalized(object sender, NewTaskFinalizedEventArgs ea)
         {
-            _recordedTasks.Add(ea.Task);
+            _computerTasks.Add(ea.Task);
             SwitchViewToTaskList();
             RestoreClientWindow();
         }
 
         private void SwitchViewToTaskList()
         {
-            TaskList tl = new TaskList(_recordedTasks);
+            TaskList tl = new TaskList(_computerTasks);
             tl.NavigateToNewTaskPage = NavigateToNewTaskPage;
             tl.StartTaskExecution = MinimizeClientWindow;
             tl.TaskExecutionDone = RestoreClientWindow;
