@@ -5,29 +5,20 @@ namespace Windows.Matic.v1.Core.Task
 {
     public class KeyboardEvent : InputEvent
     {
-        private Keys _key;
-        private KeyEventFlags _eventFlag;
-
         public KeyboardEvent(Keys k, KeyEventFlags eventFlag, int delay)
         {
-            _key = k;
-            _delay = delay;
-            _eventFlag = eventFlag;
+            Key = k;
+            EventFlag = eventFlag;
+            DelayBeforeEvent = delay;
         }
 
-        public Keys Key
-        {
-            get { return _key; }
-        }
+        public Keys Key { get; set; }
 
-        public KeyEventFlags EventFlag
-        {
-            get { return _eventFlag; }
-        }
+        public KeyEventFlags EventFlag { get; set; }
 
         public override string ToString()
         {
-            return "KeyboardEvent - " + _key + " " + _eventFlag;
+            return "KeyboardEvent - " + Key + " " + EventFlag;
         }
     }
 }

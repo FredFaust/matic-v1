@@ -1,31 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Windows.Matic.v1.Core.Task;
 
 namespace Windows.Matic.v1.Client.Profile
 {
     public class UserProfile
     {
-        private string _name;
-        private List<ComputerTask> _computerTasks;
-
         public UserProfile(string name)
         {
-            _name = name;
-            _computerTasks = new List<ComputerTask>();
+            Name = name;
+            ComputerTasks = new List<ComputerTask>();
         }
 
         public void AddComputerTask(ComputerTask task)
         {
-            _computerTasks.Add(task);
+            ComputerTasks.Add(task);
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; set; }
+
+        public List<ComputerTask> ComputerTasks { get; set; }
     }
 }

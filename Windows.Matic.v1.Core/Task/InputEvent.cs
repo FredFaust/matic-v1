@@ -2,7 +2,6 @@
 {
     public class InputEvent
     {
-        protected int _delay;
-        public int DelayBeforeEvent { get { return _delay; } }
+        public int DelayBeforeEvent { get; set; }
     }
 }

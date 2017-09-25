@@ -2,23 +2,14 @@
 {
     public class ComputerTask
     {
-        private string _taskName;
-        private InputChain _inputChain;
-
         public ComputerTask(string taskName, InputChain inputChain)
         {
-            _taskName = taskName;
-            _inputChain = inputChain;
+            TaskName = taskName;
+            InputChain = inputChain;
         }
 
-        public string TaskName
-        {
-            get { return _taskName; }
-        }
+        public string TaskName { get; set; }
 
-        public InputChain InputChain
-        {
-            get { return _inputChain; }
-        }
+        public InputChain InputChain { get; set; }
     }
 }
