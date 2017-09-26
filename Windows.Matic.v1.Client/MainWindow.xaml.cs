@@ -17,9 +17,17 @@ namespace Windows.Matic.v1.Client
         private UserProfile _profile;
         private string _savedProfileLocation;
 
+        private JsonSerializerSettings _customSerializerSettings;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            _customSerializerSettings = new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            };
+
             _savedProfileLocation = System.Windows.Forms.Application.UserAppDataPath + "\\profile.json";
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 
@@ -63,11 +71,8 @@ namespace Windows.Matic.v1.Client
 
         private void SaveUserProfile()
         {
-            var serializerSettings = new JsonSerializerSettings()
-            {
-                TypeNameHandling = TypeNameHandling.Objects
-            };
-            File.WriteAllText(_savedProfileLocation, JsonConvert.SerializeObject(_profile, serializerSettings));
+            
+            File.WriteAllText(_savedProfileLocation, JsonConvert.SerializeObject(_profile, _customSerializerSettings));
         }
 
         private UserProfile LoadUserProfile()
@@ -80,7 +85,7 @@ namespace Windows.Matic.v1.Client
             {
                 // TODO : Complex custom loader to populate Chain / List<InputEvent>
                 string jsonProfile = File.ReadAllText(_savedProfileLocation);
-                return JsonConvert.DeserializeObject<UserProfile>(jsonProfile);
+                return JsonConvert.DeserializeObject<UserProfile>(jsonProfile, _customSerializerSettings);
             }
         }
 
