@@ -63,7 +63,11 @@ namespace Windows.Matic.v1.Client
 
         private void SaveUserProfile()
         {
-            File.WriteAllText(_savedProfileLocation, JsonConvert.SerializeObject(_profile));
+            var serializerSettings = new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            };
+            File.WriteAllText(_savedProfileLocation, JsonConvert.SerializeObject(_profile, serializerSettings));
         }
 
         private UserProfile LoadUserProfile()
@@ -74,6 +78,7 @@ namespace Windows.Matic.v1.Client
             }
             else
             {
+                // TODO : Complex custom loader to populate Chain / List<InputEvent>
                 string jsonProfile = File.ReadAllText(_savedProfileLocation);
                 return JsonConvert.DeserializeObject<UserProfile>(jsonProfile);
             }
