@@ -41,7 +41,7 @@
                         <DockPanel LastChildFill="False">
                             <Label DockPanel.Dock="Left" VerticalAlignment="Center" Name="lblTaskName" Content="{Binding TaskName}"/>
                             <Button DockPanel.Dock="Right" Margin="5" Padding="4" MaxHeight="25" Tag="{Binding}" Click="Button_Click_RunTask">Run</Button>
-                            <Button DockPanel.Dock="Right" Margin="5" Padding="4" MaxHeight="25">Edit</Button>
+                            <Button DockPanel.Dock="Right" Margin="5" Padding="4" MaxHeight="25" Tag="{Binding}" Click="Button_Click_DeleteTask">Delete</Button>
                         </DockPanel>
                     </Border>
                 </DataTemplate>

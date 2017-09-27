@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using Windows.Matic.v1.Core.Task;
 using Windows.Matic.v1.Core.Player;
 using Windows.Matic.v1.Core;
+using Windows.Matic.v1.Client.Events;
 
 namespace Windows.Matic.v1.Client.UserControls
 {
@@ -19,6 +20,8 @@ namespace Windows.Matic.v1.Client.UserControls
 
         public ComputerTask HardcodedTask;
         private List<ComputerTask> _computerTasks;
+
+        public event EventHandler<TaskObjectEventArgs> RaiseTaskDeleted;
 
         public TaskList(List<ComputerTask> computerTasks)
         {
@@ -39,6 +42,17 @@ namespace Windows.Matic.v1.Client.UserControls
 
             StartTaskExecution?.Invoke();
             MaticCoreFacade.PlayTask(task, TaskExecutionCompleted);
+        }
+
+        private void Button_Click_DeleteTask(object sender, RoutedEventArgs e)
+        {
+            ComputerTask task = ((Button)sender).Tag as ComputerTask;
+
+            if (MessageBox.Show("Delete task forever?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                _computerTasks.Remove(task);
+                RaiseTaskDeleted?.Invoke(this, new TaskObjectEventArgs(task));
+            }
         }
 
         public void TaskExecutionCompleted(TaskExecutionResults results)

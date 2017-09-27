@@ -6,6 +6,7 @@ using Windows.Matic.v1.Client.Profile;
 using System.IO;
 using Newtonsoft.Json;
 using System;
+using Windows.Matic.v1.Client.Events;
 
 namespace Windows.Matic.v1.Client
 {
@@ -53,7 +54,7 @@ namespace Windows.Matic.v1.Client
             contentControl.Content = nt;
         }
 
-        public void HandleNewTaskFinalized(object sender, NewTaskFinalizedEventArgs ea)
+        public void HandleNewTaskFinalized(object sender, TaskObjectEventArgs ea)
         {
             _profile.AddComputerTask(ea.Task);
             SwitchViewToTaskList();
@@ -66,7 +67,13 @@ namespace Windows.Matic.v1.Client
             tl.NavigateToNewTaskPage = NavigateToNewTaskPage;
             tl.StartTaskExecution = MinimizeClientWindow;
             tl.TaskExecutionDone = RestoreClientWindow;
+            tl.RaiseTaskDeleted += HandleTaskDeleted;
             contentControl.Content = tl;
+        }
+
+        public void HandleTaskDeleted(object sender, TaskObjectEventArgs ea)
+        {
+            _profile.DeleteComputerTask(ea.Task);
         }
 
         private void SaveUserProfile()

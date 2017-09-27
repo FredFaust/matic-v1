@@ -69,9 +69,7 @@ namespace Windows.Matic.v1.Core.Recorder.Handler
         {
             if (code >= 0 && wParam != MouseMessages.WM_MOUSEMOVE)
             {
-                int delay = GetDelaySinceLastEvent();
-
-                HandleNewInputEvent(new MouseEvent(lParam.pt.x, lParam.pt.y, wParam, delay));
+                HandleNewInputEvent(new MouseEvent(lParam.pt.x, lParam.pt.y, wParam, GetDelaySinceLastEvent()));
             }
 
             return 0;

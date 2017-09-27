@@ -16,6 +16,11 @@ namespace Windows.Matic.v1.Client.Profile
             ComputerTasks.Add(task);
         }
 
+        public void DeleteComputerTask(ComputerTask task)
+        {
+            ComputerTasks.Remove(task);
+        }
+
         public string Name { get; set; }
 
         public List<ComputerTask> ComputerTasks { get; set; }

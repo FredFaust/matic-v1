@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Events\TaskObjectEventArgs.cs" />
     <Compile Include="Profile\UserProfile.cs" />
     <Compile Include="UserControls\NewTask.xaml.cs">
       <DependentUpon>NewTask.xaml</DependentUpon>
