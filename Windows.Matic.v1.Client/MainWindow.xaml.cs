@@ -74,6 +74,8 @@ namespace Windows.Matic.v1.Client
         public void HandleTaskDeleted(object sender, TaskObjectEventArgs ea)
         {
             _profile.DeleteComputerTask(ea.Task);
+            // YOLO
+            SwitchViewToTaskList();
         }
 
         private void SaveUserProfile()
